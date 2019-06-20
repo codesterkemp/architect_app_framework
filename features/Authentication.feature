@@ -6,6 +6,10 @@ Given user is on the login page
 		When the user login with valid credentials
 		Then the Architect home screen is displayed to the user
 
-    Scenario: Login with bad credentials 
-		When he user login with invalid credentials
+  Scenario: Login with bad credentials 
+		When the user login with invalid credentials
 		Then the login page is displayed with an error message
+
+	Scenario: Reset credentials
+		When the user clicks on the forgot password link
+		Then the Forgot Password page is displayed

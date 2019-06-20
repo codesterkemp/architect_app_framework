@@ -19,6 +19,10 @@ class LoginPage
     @browser.button(text: 'Log in').click
   end
 
+  def click_forgot_password
+    @browser.link(text: 'Forgot your password?').click
+  end
+
   def warning_message_displayed?
     @browser.div(text: 'Incorrect username/email or password.').present?
   end
