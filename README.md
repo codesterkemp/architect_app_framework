@@ -17,4 +17,4 @@ Edit config.yml and provide the appropriate values.
 Now you should be ready to run the framework.
 
 In architect_app_framework folder execute the following command to run the framework
->cucumber
+>cucumber -f html >test.html
