@@ -4,7 +4,6 @@ require 'watir'
 require 'yaml'
 require 'selenium-webdriver'
 require 'rspec/expectations'
-require './features/support/env.rb'
 require './features/pages/login_page.rb'
 
 config = YAML.load_file('./features/support/config.yml')
