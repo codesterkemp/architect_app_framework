@@ -8,6 +8,7 @@ class ArchitectHomePage
   end
 
   def click_new_feed_button
+    @browser.wait_until { |b| b.a(title: 'New Feed').exists? }
     @browser.a(title: 'New Feed').click
   end
 
