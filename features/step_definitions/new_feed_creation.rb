@@ -6,6 +6,7 @@ require 'selenium-webdriver'
 require 'rspec/expectations'
 require './features/pages/login_page.rb'
 require './features/pages/architect_home_page.rb'
+require './features/pages/routes.rb'
 
 config = YAML.load_file('./features/support/config.yml')
 
@@ -52,11 +53,58 @@ When('the user goes back to the Architect home Page') do
   @architect_home_page.click_all_feeds
 end
 
-Then('the Feed Column should be populated with the New Feed name') do
-  @browser.wait_until { |b| b.a(title: 'New Feed').exists? }
-  expect(@browser.a(text: 'feedname').exists?).to eq(true)
-end
-
 When('user clicks on the New Feed name button') do
   @browser.a(text: 'feedname').click
+end
+
+When("the user creates a new feed named {string}") do |string|
+  @architect_home_page = ArchitectHomePage.new(@browser)
+  @architect_home_page.click_new_feed_button
+  @architect_home_page.enter_feed_name(string)
+  @architect_home_page.enter_publisher_name('pub name ' + string)
+  @architect_home_page.enter_publisher_url('http://www.example.com/' + string)
+  @architect_home_page.enter_language('en')
+  @architect_home_page.click_agency_info_tab
+  @architect_home_page.enter_agency_info_url('http://www.transloc.com/' + string)
+  @architect_home_page.click_save
+end
+
+Then("the Feed Column should be populated with {string}") do |string|
+  @browser.wait_until { |b| b.a(title: 'New Feed').exists? }
+  expect(@browser.a(text: string).exists?).to eq(true)
+end
+
+When("the user creates a new route named {string}") do |string|
+  # @browser.wait_until { |b| b.a(data_id: 'routes').exists? }
+  @routes = RoutesPage.new(@browser)
+  @routes.click_routes_option
+  @routes.click_new_route
+  @routes.enter_long_name(string)
+  @routes.enter_short_name(string)
+  @routes.enter_bg_color('008844')
+  @routes.enter_text_color('FFFFFF')
+  @routes.click_save
+end
+
+When("navigates back to the routes page") do
+  @routes.back_to_routes_main_page
+end
+
+Then("the {string} Route is created") do |string|
+  @routes.does_this_route_exist?(string)
+end
+
+When('the user navigates back to the {string} main page') do |string|
+  @routes.back_to_feed_dashboard(string)
+end
+
+When("the user creates a stop named {string} with cordinates {float} and {float}") do |string, float, float2|
+  @stops = StopsPage.new(@browser)
+  @stops.click_stop_option
+  @stops.click_new_stop
+  @stops.enter_stop_name(string)
+  @stops.latitude(float)
+  @stops.longitude(float2)
+  @stops.back_to_stops_main_page
+  @stops.does_this_stop_exist?(stop_name)
 end
